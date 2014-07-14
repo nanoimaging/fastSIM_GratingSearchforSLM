@@ -1,15 +1,19 @@
-% CalcGrat(gratpermin,gratpermax, Hsteps, Vsteps, Numdir)
+% CalcGrat(gratpermin,gratpermax, Hsteps, Vsteps, Numdir, filtersize, Iunwanted)
 % for searching 3 or 6 orientations of gratings.
 % This code only work with either 3 grating orientations or 6 grating
 % orientations.
-% Example: CalcGrat(2.800, 2.850, 3, 1, 3)
-% Example: CalcGrat(2.700, 2.850, 9, 4, 6)
-
 % gratpermin: minumum grating period (unit: in pixels)
-% gratpermin: maximum grating period (unit: in pixels)
-% Hsteps: # of equi-phase steps in x
-% Vsteps: # of equi-phase steps in y
+% gratpermax: maximum grating period (unit: in pixels)
+% Hsteps: # of equi-phase steps in x or y
+% Vsteps: # of equi-phase steps in y or x
 % Numdir: 3 or 6 orientations of gratings
+% filtersize: the half size of the hole on the Fourier filter. e.g.: 10
+% Iunwanted: maximum intensity (in percentage) of unwanted orders through Fourier filter.
+% e.g.: 0.03
+
+% Example: CalcGrat(2.800, 2.850, 3, 1, 3, 10, 0.03)
+% Example: CalcGrat(2.700, 2.850, 9, 4, 6, 10, 0.03)
+
 
 
 % The following boundaries parameters have to be defined manually as in this example
@@ -23,7 +27,7 @@
 % 2014 May, Hui-Wen Lu-Walther, Ronny Foerster
 
 
-function CalcGrat(gratpermin,gratpermax, Hsteps, Vsteps, Numdir)
+function CalcGrat(gratpermin,gratpermax, Hsteps, Vsteps, Numdir, filtersize, Iunwanted)
 
 %% declarations
 %define boundaries of parameters
@@ -53,7 +57,8 @@ numgrat=0;
 
 disp('calculate grating properties out of the parameters')
 for ax=0:para.axmax
-    round(ax/para.axmax*100) %display value from 1 to 100
+    progress=round(ax/para.axmax*100); %display value from 1 to 100
+    disp([sprintf('Matched grating searching progress %d', progress) '%.....']);
     for ay=-para.aymax:para.aymax
         gratdir=GratingDir(ax,ay); %calc grating dir --> independent from bx and by
         
@@ -116,7 +121,7 @@ numacceptgrat
 disp('Simulate Fourier plane')
 
 
-TestUnwantedOrders(matchgrat,Numdir)
+TestUnwantedOrders(matchgrat,Numdir, filtersize, Iunwanted)
 
 
     

@@ -6,7 +6,7 @@
 % 2014 May, Hui-Wen Lu-Walther and Ronny Foerster
 
 
-function CalcParameters_txt(gratingparameter,Numdir)
+function CalcParameters_txt(gratingparameter,Numdir, filtersize, Iunwanted)
 
 filename=strcat('GratingParameters','.txt'); 
 fid = fopen(filename,'a'); 
@@ -60,7 +60,7 @@ fprintf(fid,'\r\n\n');
 
 fclose(fid);
 %% Unwanted orders test and write result into a txt file or not
-TestUnwantedOrders(gratingparameter,Numdir, 1)
+TestUnwantedOrders(gratingparameter,Numdir, filtersize, Iunwanted, 1)
 
 
 end

@@ -14,8 +14,18 @@
 
 % 2014 May, Hui-Wen Lu-Walther, Ronny Foerster
 
-function TestUnwantedOrders(matchgrat,Numdir, wintxt)
+function TestUnwantedOrders(matchgrat,Numdir, h, miniunwanted, wintxt)
+
+
 if nargin<3
+    h=10;
+end
+
+if nargin<4
+    miniunwanted=0.03;
+end
+
+if nargin<5
     wintxt=0;
 end
 
@@ -45,7 +55,7 @@ s=pixels_slm(1)/5;          %standard deviation of the gauss
 illu=exp(-(rr(pixels_slm)).^2 / s.^2);  %calculate gaussian beam exp(r^2/s^2)
 
 %holessize: square half edge length
-h=10;    
+% h=10;    
 unwantedorder=zeros(2*h+1,2*h+1,Numdir);  
 
 succesfull=false;%set to true if a grating is found
@@ -93,7 +103,7 @@ for i=1:size(matchgrat,3)  % # of match gratings found
         end
         
         % check if less than 3% of the light is in unwanted orders
-        if sum(sum(abs(unwantedorder(:,:,j)),1),2)>maxfirst*0.05  
+        if sum(sum(abs(unwantedorder(:,:,j)),1),2)>maxfirst*miniunwanted  
             maskoperates=false;
             %             disp('Iunwanted too high')
             %             Iunwanted=sum(sum(abs(unwantedorder(:,:,j)),1),2);
@@ -135,16 +145,18 @@ for i=1:size(matchgrat,3)  % # of match gratings found
 
             dip_image(convsumfourier)
             dip_image(unwantedorder);
+            disp('Click on the FT images and continue next process');
             waitforbuttonpress;
             close all
             
-            CalcParameters_txt(matchgrat(:,:,i),Numdir);
+            CalcParameters_txt(matchgrat(:,:,i),Numdir, h, miniunwanted);
             PrimeNum4Phase(matchgrat(:,:,i));
             
         end
         
     end
-    round(l/size(matchgrat,3)*100)   %disp progress in %
+    a=round(l/size(matchgrat,3)*100);  
+    disp([sprintf('Progress of testing unwanted orders  %d', a) '%.....']);
     l=l+1;
     sumfourier=zeros(pixels_slm);  
 end
