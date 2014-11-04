@@ -70,7 +70,7 @@ for number=1:Numdir
         savegrat=double(grating(:,:,number,phase));
         
         if pngortif==1
-            MeasureorDeEx==0
+%             MeasureorDeEx==0
             filename=sprintf('dir%dstep%d.png',number,phase);           
             imwrite(savegrat,filename,'png','bitdepth',1);            
         else
