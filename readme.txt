@@ -1,4 +1,4 @@
-Copyright 2014 Hui-Wen Lu-Walther
+Copyright 2014 Ronny Förster, Hui-Wen Lu-Walther, Martin Kielhorn
 
 
 -----------------------------------------------------------
